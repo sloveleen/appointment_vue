@@ -1,5 +1,5 @@
 <template>
-  <div class="w-100 bg-white px-4 py-3">
+  <div class="w90 bg-white px-4 py-3">
     <div class="d-flex align-items-center">
       <div class="lf-t-header d-flex align-items-center">
         <span class="badge bg-light text-dark"

@@ -4,11 +4,14 @@
   box-sizing: border-box;
 }
 
-.sidebar {
-  width: 200px;
-  background-color: #f4f4f4;
-  padding: 20px;
-  float: left;
+h2 {
+  font-size: 1.5rem;
+  font-family: poppins, sans-serif;
+  color: #333;
+}
+
+.position-fixed {
+  position: fixed;
 }
 
 li {
@@ -19,16 +22,50 @@ a {
   text-decoration: none;
 }
 
+.w30 {
+  width: calc(30% - 5px) !important;
+}
+
+.w33 {
+  width: calc(33% - 10px) !important;
+}
+
+.w40 {
+  width: calc(40% - 10px) !important;
+}
+
+.w50 {
+  width: calc(50% - 10px) !important;
+}
+
+.w60 {
+  width: calc(60% - 10px) !important;
+}
+
+.w70 {
+  width: calc(70% - 10px) !important;
+}
+
+.w80 {
+  width: calc(80% - 10px) !important;
+}
+
+.w100 {
+  width: 100% !important;
+}
+
 body {
   background-color: #ffffff;
 }
 
+.container {
+  margin-top: 20px;
+}
+
 .form-container {
   background-color: #fff;
-  width: 60%;
-  height: 90vh;
-  overflow-y: scroll;
-  margin: auto;
+  width: 70%;
+  margin: 1rem auto;
   padding: 30px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
@@ -39,6 +76,7 @@ h2 {
   margin-bottom: 20px;
   font-size: 1.5rem;
   font-family: poppins;
+  color: #333;
 }
 
 .basic-info {
@@ -59,6 +97,9 @@ h2 {
   color: #333;
 }
 .form-group input[type=text],
+.form-group input[type=time],
+.form-group input[type=select],
+.form-group select,
 .form-group textarea {
   width: 100%;
   padding: 10px;
@@ -73,6 +114,11 @@ h2 {
   margin-top: 5px;
 }
 
+.day-hours .time-inputs {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
 .submit-btn {
   background-color: #0056b3;
   color: #fff;
@@ -107,4 +153,58 @@ h2 {
 }
 .info-section a:hover {
   text-decoration: underline;
+}
+
+.branding-section {
+  margin: 20px;
+}
+.branding-section .branding-description {
+  font-size: 0.9rem;
+  color: #666;
+  margin-bottom: 20px;
+}
+.branding-section .logo-section h3 {
+  font-size: 1.2rem;
+  color: #333;
+}
+.branding-section .logo-section .upload-box {
+  width: 60%;
+  height: 100px;
+  border: 2px dashed #ccc;
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  margin: 1rem auto;
+}
+.branding-section .logo-section .upload-box .placeholder {
+  text-align: center;
+  background-color: transparent;
+}
+.branding-section .logo-section .upload-box .placeholder i {
+  font-size: 2rem;
+  color: #888;
+}
+.branding-section .logo-section .upload-box .placeholder p {
+  font-size: 0.9rem;
+  color: #333;
+}
+.branding-section .logo-section .upload-box .placeholder a {
+  color: #0056b3;
+  text-decoration: none;
+  cursor: pointer;
+}
+.branding-section .logo-section .upload-box .placeholder a:hover {
+  text-decoration: underline;
+}
+.branding-section .logo-section .upload-box .logo-preview img {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: contain;
+     object-fit: contain;
+  border-radius: 5px;
+}
+.branding-section .logo-section input[type=file] {
+  display: none;
 }/*# sourceMappingURL=style.css.map */

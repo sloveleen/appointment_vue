@@ -9,16 +9,19 @@ $text-font: sans-serif;
 $primary-color: #0056b3; // Darker blue for better contrast
 $background-color: #ffffff;
 $label-color: #333;
+
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
-.sidebar {
-  width: 200px;
-  background-color: #f4f4f4;
-  padding: 20px;
-  float: left;
+h2 {
+  font-size: 1.5rem;
+  font-family: poppins, sans-serif;
+  color: #333;
+}
+.position-fixed {
+  position: fixed;
 }
 li {
   list-style: none;
@@ -26,17 +29,41 @@ li {
 a {
   text-decoration: none;
 }
-
+.w30 {
+  width: calc(30% - 5px) !important;
+}
+.w33 {
+  width: calc(33% - 10px) !important;
+}
+.w40 {
+  width: calc(40% - 10px) !important;
+}
+.w50 {
+  width: calc(50% - 10px) !important;
+}
+.w60 {
+  width: calc(60% - 10px) !important;
+}
+.w70 {
+  width: calc(70% - 10px) !important;
+}
+.w80 {
+  width: calc(80% - 10px) !important;
+}
+.w100 {
+  width: 100% !important;
+}
 body {
   background-color: $background-color;
 }
-
+.container {
+  margin-top: 20px;
+}
 .form-container {
   background-color: $form-bg-color;
-  width: 60%;
-  height: 90vh;
-  overflow-y: scroll;
-  margin: auto;
+  width: 70%;
+  // margin: 6rem auto;
+  margin: 1rem auto;
   padding: 30px;
   box-shadow: 0 2px 10px $box-shadow-color;
   border-radius: 10px;
@@ -47,6 +74,7 @@ h2 {
   margin-bottom: 20px;
   font-size: 1.5rem;
   font-family: $font-heading;
+  color: $label-color;
 }
 
 .basic-info {
@@ -68,6 +96,9 @@ h2 {
   }
 
   input[type="text"],
+  input[type="time"],
+  input[type="select"],
+  select,
   textarea {
     width: 100%;
     padding: 10px;
@@ -82,7 +113,15 @@ h2 {
   color: $small-text-color;
   margin-top: 5px;
 }
-
+.day-hours {
+  .time-inputs {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    .text-box {
+    }
+  }
+}
 .submit-btn {
   background-color: $primary-color;
   color: #fff;
@@ -119,6 +158,71 @@ h2 {
 
     &:hover {
       text-decoration: underline;
+    }
+  }
+}
+.branding-section {
+  margin: 20px;
+
+  .branding-description {
+    font-size: 0.9rem;
+    color: #666;
+    margin-bottom: 20px;
+  }
+
+  .logo-section {
+    h3 {
+      font-size: 1.2rem;
+      color: #333;
+    }
+
+    .upload-box {
+      width: 60%;
+      height: 100px;
+      border: 2px dashed #ccc;
+      border-radius: 5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      margin: 1rem auto;
+
+      .placeholder {
+        text-align: center;
+        background-color: transparent;
+        i {
+          font-size: 2rem;
+          color: #888;
+        }
+
+        p {
+          font-size: 0.9rem;
+          color: #333;
+        }
+
+        a {
+          color: #0056b3;
+          text-decoration: none;
+          cursor: pointer;
+
+          &:hover {
+            text-decoration: underline;
+          }
+        }
+      }
+
+      .logo-preview {
+        img {
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+          border-radius: 5px;
+        }
+      }
+    }
+
+    input[type="file"] {
+      display: none;
     }
   }
 }

@@ -1,20 +1,30 @@
 <template>
-  <div id="app">
-    <!-- Side Navbar -->
-    <div class="sidebar">
-      <h2>My Sidebar</h2>
-      <ul>
-        <li><a href="#">Home</a></li>
-        <li><a href="#">About</a></li>
-        <li><a href="#">Services</a></li>
-        <li><a href="#">Contact</a></li>
-      </ul>
+  <div class="position-sticky">
+    <div class="text-center">
+      <img
+        src="../../assets/images/life-insurance.png"
+        alt="BBA"
+        class="logo"
+      />
     </div>
+    <div class="text-left">
+      <h1 class="h3 text-success">Insurance Portal</h1>
+    </div>
+    <ul class="side-links">
+      <li><router-link to="/AddAppointment">Add Appointment</router-link></li>
+      <li><router-link to="/OtherComponent">Other Component</router-link></li>
+    </ul>
   </div>
 </template>
 
 <script>
 export default {
   name: "SidebarClient",
+  data() {
+    return {
+      role: "",
+      id: "",
+    };
+  },
 };
 </script>

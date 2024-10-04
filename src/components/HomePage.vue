@@ -1,16 +1,16 @@
 <template>
-  <DashboardComponents>
+  <DashboardLayout>
     <h2>homepage</h2>
-  </DashboardComponents>
+  </DashboardLayout>
 </template>
 
 <script>
-import DashboardComponents from "./MainPageLayout/DashboardComponents.vue";
+import DashboardLayout from "./MainPageLayout/DashboardLayout.vue";
 
 export default {
   name: "HomePage",
   components: {
-    DashboardComponents,
+    DashboardLayout,
   },
 };
 </script>
