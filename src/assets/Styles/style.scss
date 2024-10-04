@@ -1,0 +1,124 @@
+$form-bg-color: #fff;
+$box-shadow-color: rgba(0, 0, 0, 0.1);
+$border-color: #ccc;
+$text-color: #2b2b2b;
+$small-text-color: #999;
+$hover-primary-color: #0056b3;
+$font-heading: poppins;
+$text-font: sans-serif;
+$primary-color: #0056b3; // Darker blue for better contrast
+$background-color: #ffffff;
+$label-color: #333;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+.sidebar {
+  width: 200px;
+  background-color: #f4f4f4;
+  padding: 20px;
+  float: left;
+}
+li {
+  list-style: none;
+}
+a {
+  text-decoration: none;
+}
+
+body {
+  background-color: $background-color;
+}
+
+.form-container {
+  background-color: $form-bg-color;
+  width: 60%;
+  height: 90vh;
+  overflow-y: scroll;
+  margin: auto;
+  padding: 30px;
+  box-shadow: 0 2px 10px $box-shadow-color;
+  border-radius: 10px;
+}
+
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+  font-size: 1.5rem;
+  font-family: $font-heading;
+}
+
+.basic-info {
+  font-size: 14px;
+  color: $text-color;
+  margin-bottom: 20px;
+  font-family: $text-font;
+}
+
+.form-group {
+  margin-bottom: 20px;
+  font-family: $text-font;
+
+  label {
+    display: block;
+    font-size: 0.9rem;
+    margin-bottom: 5px;
+    color: $label-color;
+  }
+
+  input[type="text"],
+  textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 0.9rem;
+    border: 1px solid $border-color;
+    border-radius: 5px;
+  }
+}
+
+.small-info {
+  font-size: 0.8rem;
+  color: $small-text-color;
+  margin-top: 5px;
+}
+
+.submit-btn {
+  background-color: $primary-color;
+  color: #fff;
+  padding: 10px;
+  border: none;
+  border-radius: 5px;
+  font-size: 1rem;
+  width: 20%;
+  cursor: pointer;
+  margin: 20px auto;
+
+  &:hover {
+    background-color: $hover-primary-color;
+  }
+}
+
+.info-link {
+  color: $primary-color;
+  text-decoration: none;
+  font-size: 0.85rem;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.info-section {
+  font-size: 0.85rem;
+  color: $small-text-color;
+
+  a {
+    color: $primary-color;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+}
