@@ -125,7 +125,7 @@
           />
         </div>
 
-        <h3>Social contact</h3>
+        <h4>Social contact</h4>
 
         <div class="form-group">
           <label for="website">Website</label>
@@ -167,7 +167,7 @@
         <h4>Branding</h4>
         <p class="branding-description">
           Your brand information applies to the look and feel of your receipts,
-          invoices, appointment bookings, and marketing.
+          invoices, location bookings, and marketing.
         </p>
 
         <!-- Logo Upload Section -->
@@ -199,9 +199,9 @@
       <hr />
 
       <div class="business-hours">
-        <h3>Business hours</h3>
+        <h4>Business hours</h4>
 
-        <div class="form-group">
+        <div class="form-group mt-4">
           <label for="timeZone">Time Zone</label>
           <select v-model="timeZone" id="timeZone">
             <option value="Sydney">Sydney</option>
@@ -237,7 +237,7 @@
                 <label for="openTime w100">Open time</label>
                 <input type="time" class="border-0" v-model="day.openTime" />
               </span>
-              <span class="text-box border rounded p-2 d-flex flex-column">
+              <span class="text-box border rounded p-2 d-flex flex-column ml-1">
                 <label for="closeTime">Close time</label>
                 <input type="time" class="border-0" v-model="day.closeTime" />
               </span>

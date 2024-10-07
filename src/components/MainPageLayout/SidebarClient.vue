@@ -4,15 +4,49 @@
       <img
         src="../../assets/images/life-insurance.png"
         alt="BBA"
-        class="logo"
+        class="main-logo w30"
       />
     </div>
-    <div class="text-left">
-      <h1 class="h3 text-success">Insurance Portal</h1>
-    </div>
-    <ul class="side-links">
-      <li><router-link to="/AddAppointment">Add Appointment</router-link></li>
-      <li><router-link to="/OtherComponent">Other Component</router-link></li>
+
+    <ul class="side-links mt-3">
+      <li class="nav-item">
+        <router-link class="nav-link active" to="/">Dashboard</router-link>
+      </li>
+      <li class="nav-item">
+        <router-link class="nav-link" to="/">Calendar</router-link>
+      </li>
+      <li class="nav-item">
+        <router-link class="nav-link" to="/">Waitlist</router-link>
+      </li>
+      <li class="nav-item">
+        <router-link class="nav-link" to="/">Online Booking</router-link>
+      </li>
+      <li class="nav-item">
+        <router-link class="nav-link" to="/">Library</router-link>
+      </li>
+      <li class="nav-item">
+        <router-link class="nav-link" to="/">Staff</router-link>
+      </li>
+      <li class="nav-item">
+        <router-link class="nav-link" to="/">Settings</router-link>
+      </li>
+      <li class="nav-item">
+        <router-link class="nav-link" to="/">What's New</router-link>
+      </li>
+      <li class="nav-item">
+        <router-link class="nav-link" to="/">Quick Find</router-link>
+      </li>
+      <li><router-link class="nav-link" to="/">Dashboard</router-link></li>
+      <li>
+        <router-link class="nav-link" to="/AddLocation"
+          >Add Location</router-link
+        >
+      </li>
+      <li>
+        <router-link class="nav-link" to="/LocationList"
+          >Location List</router-link
+        >
+      </li>
     </ul>
   </div>
 </template>

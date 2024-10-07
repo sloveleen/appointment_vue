@@ -1,5 +1,5 @@
 <template>
-  <div class="w90 bg-white px-4 py-3">
+  <div class="w90 bg-white p-3">
     <div class="d-flex align-items-center">
       <div class="lf-t-header d-flex align-items-center">
         <span class="badge bg-light text-dark"
@@ -15,9 +15,18 @@
       <!-- login: {{ apis.loginApi }} -->
       <div class="right-header">
         <ul class="rt-links">
-          <li class="nav-item dropdown">
-            <a
-              class="dropdown-toggle btn-profile text-link"
+          <li class="nav-item dropdown d-flex gap-2 align-items-center">
+            <span>
+              <img src="../../assets/svg/search-icon.svg" alt="search_icon" />
+            </span>
+            <span>
+              <img src="../../assets/svg/noti-bell.svg" alt="notification" />
+            </span>
+            <span>
+              <img src="../../assets/svg/list.svg" alt="list" />
+            </span>
+            <router-link
+              class="dropdown-toggle btn-profile action-btn"
               id="navbarScrollingDropdown"
               role="button"
               data-bs-toggle="dropdown"
@@ -29,10 +38,12 @@
                 </span>
               </div>
               <span style="text-transform: capitalize">
+                Loveleen
                 <!-- {{ apis.name }} -->
               </span>
+              12
               <!-- ({{ apis.id }}) -->
-            </a>
+            </router-link>
             <ul class="dropdown-menu" aria-labelledby="navbarScrollingDropdown">
               <li>
                 <router-link class="dropdown-item" to="#"
