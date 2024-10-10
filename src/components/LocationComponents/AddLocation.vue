@@ -2,7 +2,6 @@
   <DashboardLayout>
     <div class="form-container form">
       <header>
-        <button @click="closeForm" class="close-btn">✕</button>
         <h2 class="text-center">Location details</h2>
       </header>
 
@@ -330,10 +329,7 @@ export default {
         businessHours: this.days,
       });
     },
-    closeForm() {
-      // Close form logic
-      console.log("Form closed");
-    },
+
     handleDrop(e) {
       const file = e.dataTransfer.files[0];
       this.uploadLogo(file);

@@ -70,6 +70,7 @@
 </template>
 
 <script>
+import { logoutAll } from "@/store/modules/auth";
 export default {
   name: "TopHeader",
   data() {
@@ -77,6 +78,12 @@ export default {
       // userName: "",
       // user_id: "",
     };
+  },
+
+  methods: {
+    logoutUser() {
+      logoutAll(); // Clear session and redirect to login
+    },
   },
 };
 </script>

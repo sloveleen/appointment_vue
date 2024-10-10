@@ -3,7 +3,7 @@
     <div class="staff-container">
       <!-- Header -->
       <div class="header">
-        <h2>Staff</h2>
+        <h2>Service</h2>
         <input
           type="text"
           v-model="searchQuery"
@@ -56,130 +56,35 @@
 
 <script>
 import DashboardLayout from "../MainPageLayout/DashboardLayout.vue";
+import { apiMixin } from "@/store/apiMixin"; // Adjust the path accordingly
+import { mapActions, mapState } from "vuex";
 export default {
   components: { DashboardLayout },
-  data() {
-    return {
-      searchQuery: "",
-      staffList: [
-        {
-          name: "Amit Kansal",
-          email: "successvisasydney@gmail.com",
-          phone: "0468 791 726",
-          permissions: "Owner",
-          services: 8,
-        },
-        {
-          name: "Amit Kansal (T)",
-          email: "successvisaau@gmail.com",
-          phone: "0468 791 726",
-          permissions: "Team Permissions",
-          services: 4,
-        },
-        {
-          name: "Krishlyn Krishlyn (T)",
-          email: "infosydney@successvisa.com.au",
-          phone: "0468 791 726",
-          permissions: "Team Permissions",
-          services: 2,
-        },
-        {
-          name: "Krishlyn Krishlyn",
-          email: "info@successvisa.com.au",
-          phone: "0468 791 726",
-          permissions: "Team Permissions",
-          services: 4,
-        },
-        {
-          name: "Krish",
-          email: "info@successvisa.com.au",
-          phone: "0468 791 726",
-          permissions: "Team Permissions",
-          services: 4,
-        },
-      ],
-    };
-  },
+  mixins: [apiMixin],
   computed: {
-    filteredStaff() {
-      return this.staffList.filter((staff) =>
-        staff.name.toLowerCase().includes(this.searchQuery.toLowerCase())
-      );
-    },
+    ...mapState(["someStateProperty"]), // Accessing Vuex state
   },
   methods: {
-    getInitials(name) {
-      return name
-        .split(" ")
-        .map((n) => n[0].toUpperCase())
-        .join("");
+    ...mapActions(["someAction"]), // Mapping Vuex actions
+    async loadData() {
+      const data = await this.fetchDataMixin("/serviceList");
+      this.someAction(data); // Dispatching Vuex action with fetched data
     },
-    getBorderStyle(name) {
-      // Define colors for each border-left
-      const colors = ["#007bff", "#28a745", "#ffc107", "#dc3545"];
-      const index = name.length % colors.length;
-      return {
-        borderLeft: `2px solid ${colors[index]}`,
-        paddingLeft: "10px", // Adjust padding to make up for the border
-        backgroundColor: "#fff", // Ensure background is white
-        color: "#555",
-        // borderRadius: "50%",
-      };
-    },
+  },
+  created() {
+    this.loadData(); // Load data on component creation
   },
 };
 </script>
 
 <style scoped>
-/* Container Styling */
-.staff-container {
-  padding: 20px;
-  background-color: #f7f7f7;
-  font-family: Arial, sans-serif;
-}
-
-/* Header */
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-h2 {
-  font-size: 1.5rem;
-  margin: 0;
-}
-
-.search-input {
-  padding: 10px;
-  font-size: 1rem;
-  width: 300px;
-  border: 1px solid #ccc;
-  border-radius: 5px;
-}
-
-.add-staff-btn {
-  background-color: #0056b3;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-}
-
-.add-staff-btn:hover {
-  background-color: #003f88;
-}
-
-/* Staff Table */
 .table-container {
   background-color: white;
   border-radius: 10px;
   overflow-x: auto;
 }
 
-.staff-table {
+table {
   width: 100%;
   border-collapse: collapse;
 }

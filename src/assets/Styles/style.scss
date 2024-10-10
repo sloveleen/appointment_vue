@@ -42,6 +42,12 @@ li {
 a {
   text-decoration: none;
 }
+.w15 {
+  width: calc(15% - 5px) !important;
+}
+.w20 {
+  width: calc(20% - 5px) !important;
+}
 .w30 {
   width: calc(30% - 5px) !important;
 }
@@ -67,7 +73,7 @@ a {
   width: 100% !important;
 }
 
-.white-bgColor {
+.white-bgcolor {
   background-color: $background-color !important;
 }
 .bx-shadow {

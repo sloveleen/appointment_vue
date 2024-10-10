@@ -3,7 +3,7 @@
     <div class="container-fluid">
       <div class="row sidebar">
         <main
-          class="col-md-9 ms-sm-auto col-lg-8 px-md-4 bx-shadow white-bgColor m-2 rounded"
+          class="col-md-9 ms-sm-auto col-lg-8 px-md-4 bx-shadow white-bgcolor m-2 rounded"
         >
           <div
             class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom"
@@ -20,7 +20,7 @@
 
           <!-- Appointments List -->
           <div class="card mb-4">
-            <div class="card-header white-bgColor">Tomorrow</div>
+            <div class="card-header white-bgcolor">Tomorrow</div>
             <ul class="list-group list-group-flush">
               <li
                 v-for="appointment in appointments"
@@ -42,7 +42,7 @@
           <!-- Notifications -->
         </main>
         <div class="card w30 mt-2">
-          <div class="card-header white-bgColor">Notifications</div>
+          <div class="card-header white-bgcolor">Notifications</div>
           <div class="card-body">
             <div v-if="notifications.length">
               <ul class="list-group list-group-flush">
@@ -63,7 +63,6 @@
         </div>
       </div>
     </div>
-    <button class="action-btn" role="button">Button 6</button>
   </DashboardLayout>
 </template>
 
@@ -124,6 +123,4 @@ export default {
 .card {
   box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
 }
-
-/* CSS */
 </style>

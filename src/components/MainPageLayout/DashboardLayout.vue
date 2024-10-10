@@ -2,9 +2,7 @@
   <div class="container-fluid">
     <div class="row">
       <!-- Sidebar -->
-      <nav
-        class="col-md-3 col-lg-2 d-md-block sidebar p-3 cursor-pointer position-fixed"
-      >
+      <nav class="col-md-4 col-lg-2 d-md-block sidebar p-3">
         <SidebarClient></SidebarClient>
       </nav>
       <!-- Sidebar End-->
