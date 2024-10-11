@@ -1,103 +1,88 @@
-import { fetchData, postData } from "../../services/apiServices"; // Import location methods
+import { fetchData, postData } from "@/services/apiServices"; // Importing from apiService
+import { apiMixin } from "@/store/apiMixin"; // Importing apiMixin for shared methods
 
 const state = () => ({
-  locationList: [], // List of all locationList
-  location: null, // Selected location details
-  loading: false, // Loading state for asynchronous actions
+  location_list: [],
+  location: null,
+  loading: false,
+  responseMsg: "",
 });
 
 const actions = {
-  // Adds a new location and commits it to the state
-  async addLocation({ commit }, location) {
-    try {
-      const newLocation = await postData("saveLocation", location);
-      commit("SAVE_LOCATION", newLocation);
-    } catch (error) {
-      console.error("Failed to save location:", error);
-    }
-  },
-
-  // Fetches list of locationList and commits it to the state
-  async loadlocationList({ commit }) {
+  async locationsList({ commit }) {
     commit("setLoading", true);
+    commit("setErrorMsg", ""); // Clear previous error message
     try {
-      const response = await fetchData("memberList");
+      const response = await fetchData("locationList"); // Use fetchData from apiService
       if (Array.isArray(response)) {
         commit("GET_LOCATION_LIST", response);
       } else {
         console.error("Fetched data is not an array:", response);
+        commit("setErrorMsg", "Fetched data is not an array.");
       }
     } catch (error) {
-      console.error("Error fetching locationList:", error);
+      console.error("Error fetching Location List:", error);
+      commit("setErrorMsg", error.message);
     } finally {
       commit("setLoading", false);
     }
   },
 
-  // Fetches details of a single location based on ID and updates the form data
-  //   async findLocation({ state }, memberid) {
-  async findLocation({ state }) {
-    // state.id = memberid;
-    // let param = { member_id: memberid };
-
+  async addLocation({ commit }, location) {
     try {
-      //   const response = await fetchData("findMember", param);
-      const response = await fetchData("findMember");
-
-      if (response && typeof response === "object") {
-        state.formdata = { ...response[0] }; // Assuming response is an array with one object
-      } else {
-        state.formdata = { ...response[0] }; // Fallback in case response is not as expected
-        console.error("Fetched data is not an object:", response);
-      }
+      const newLocation = await postData("saveLocation", location); // Use postData from apiService
+      commit("addLocation", newLocation);
     } catch (error) {
-      console.error("Error fetching location:", error);
+      console.error("Failed to add location:", error);
+      commit("setErrorMsg", error.message);
     }
   },
 
-  // Other actions...
-
-  async deleteLocationData({ commit }, memberId) {
+  async deleteLocation({ commit }, locationId) {
     try {
-      await fetchData("deleteLocation", { id: memberId });
-      commit("DELETE_MEMBER", memberId);
+      await postData("deleteLocation", { location_id: locationId }); // Use postData from apiService
+      commit("removeLocation", locationId);
     } catch (error) {
       console.error("Failed to delete location:", error);
+      commit("setErrorMsg", error.message);
     }
+  },
+  async logout({ commit }) {
+    // Example of using apiMixin's logout method
+    apiMixin.methods.logoutAll(); // Assuming logoutAll is a method in apiMixin
+    commit("setErrorMsg", "You have been logged out."); // Notify the user
   },
 };
 
 const mutations = {
-  // Adds a new location to the locationList list
-  SAVE_LOCATION(state, location) {
-    state.locationList.push(location);
+  GET_LOCATION_LIST(state, location_list) {
+    state.location_list = location_list;
   },
-
-  // Sets the list of locationList in the state
-  GET_LOCATION_LIST(state, locationList) {
-    state.locationList = locationList;
+  addLocation(state, location) {
+    state.location_list.push(location);
   },
-
-  DELETE_MEMBER(state, memberId) {
-    state.locationList = state.locationList.filter(
-      (m) => m.member_id !== memberId
+  removeLocation(state, locationId) {
+    state.location_list = state.location_list.filter(
+      (location) => location.id !== locationId
     );
   },
-  // Sets the loading state for async actions
   setLoading(state, loading) {
     state.loading = loading;
+  },
+  setErrorMsg(state, responseMsg) {
+    state.responseMsg = responseMsg;
   },
 };
 
 const getters = {
-  // Returns the list of locationList from the state
-  getMembers(state) {
-    return state.locationList;
+  getLocations(state) {
+    return state.location_list;
   },
-
-  // Returns the details of a single location from the state
-  getMember(state) {
-    return state.location;
+  isloading(state) {
+    return state.loading;
+  },
+  getErrorMsg(state) {
+    return state.responseMsg;
   },
 };
 

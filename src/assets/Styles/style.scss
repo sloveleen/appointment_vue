@@ -72,14 +72,18 @@ a {
 .w100 {
   width: 100% !important;
 }
-
+.imp {
+  color: red;
+}
 .white-bgcolor {
   background-color: $background-color !important;
 }
 .bx-shadow {
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 }
-
+.cursor {
+  cursor: pointer;
+}
 .action-btn {
   align-items: center;
   background-color: #ffffff;
@@ -125,7 +129,18 @@ a {
     transform: translateY(0);
   }
 }
-
+.action-icons {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  align-items: center;
+  span {
+    img {
+      width: 20px;
+      height: 20px;
+    }
+  }
+}
 .form-container {
   background-color: $form-bg-color;
   width: 70%;
@@ -137,7 +152,6 @@ a {
 
 h2 {
   text-align: center;
-  margin-bottom: 20px;
   font-size: 1.5rem;
   font-family: $font-heading;
   color: $label-color;

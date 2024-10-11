@@ -2,7 +2,9 @@
   <DashboardLayout>
     <div class="form-container form">
       <header>
-        <h2 class="text-center">Location details</h2>
+        <h2 class="text-center">
+          {{ isEditing ? "Edit Location" : "Add Location" }}
+        </h2>
       </header>
 
       <div class="basic-information">
@@ -20,11 +22,16 @@
         </div>
 
         <div class="form-group">
-          <label for="location-nickname">Location nickname</label>
+          <label for="location-nickname"
+            >Location Nickname
+
+            <span class="imp">*</span>
+          </label>
           <input
             type="text"
+            v-model="newLocation.location_name"
             id="location-nickname"
-            placeholder="Location nickname"
+            placeholder="Location Nickname"
           />
           <p class="small-info">
             Your Location Business Name can be edited up to 3 times every 12
@@ -36,7 +43,11 @@
 
         <div class="form-group">
           <label for="business-description">Business description</label>
-          <textarea id="business-description" rows="3"></textarea>
+          <textarea
+            id="business-description"
+            v-model="newLocation.description"
+            rows="3"
+          ></textarea>
         </div>
       </div>
       <hr />
@@ -45,7 +56,7 @@
 
         <div class="form-group">
           <label for="locationType">Location type</label>
-          <select v-model="locationType" id="locationType">
+          <select v-model="newLocation.location_type" id="locationType">
             <option value="physical">Physical location</option>
             <option value="virtual">Virtual location</option>
           </select>
@@ -55,7 +66,7 @@
           <label for="addressLine1">Address line 1</label>
           <input
             type="text"
-            v-model="addressLine1"
+            v-model="newLocation.address_line_1"
             id="addressLine1"
             placeholder="251, Church Street"
           />
@@ -65,7 +76,7 @@
           <label for="addressLine2">Address line 2</label>
           <input
             type="text"
-            v-model="addressLine2"
+            v-model="newLocation.address_line_1"
             id="addressLine2"
             placeholder="Address line 2"
           />
@@ -75,7 +86,7 @@
           <label for="suburb">Suburb</label>
           <input
             type="text"
-            v-model="suburb"
+            v-model="newLocation.suburb"
             id="suburb"
             placeholder="Parramatta"
           />
@@ -83,7 +94,7 @@
 
         <div class="form-group">
           <label for="state">State</label>
-          <select v-model="state" id="state">
+          <select v-model="newLocation.state" id="state">
             <option value="nsw">New South Wales</option>
             <!-- Add other states here -->
           </select>
@@ -93,7 +104,7 @@
           <label for="postalCode">Postal code</label>
           <input
             type="text"
-            v-model="postalCode"
+            v-model="newLocation.postalCode"
             id="postalCode"
             placeholder="2150"
           />
@@ -108,7 +119,7 @@
           <label for="email">Email</label>
           <input
             type="text"
-            v-model="email"
+            v-model="newLocation.email"
             id="email"
             placeholder="info@successvisa.com.au"
           />
@@ -118,7 +129,7 @@
           <label for="phone">Phone</label>
           <input
             type="text"
-            v-model="phone"
+            v-model="newLocation.phone"
             id="phone"
             placeholder="0468 791 726"
           />
@@ -130,7 +141,7 @@
           <label for="website">Website</label>
           <input
             type="text"
-            v-model="website"
+            v-model="newLocation.website"
             id="website"
             placeholder="www.successvisa.com.au"
           />
@@ -138,14 +149,19 @@
 
         <div class="form-group">
           <label for="socialX">X</label>
-          <input type="text" v-model="socialX" id="socialX" placeholder="X" />
+          <input
+            type="text"
+            v-model="newLocation.socialX"
+            id="socialX"
+            placeholder="X"
+          />
         </div>
 
         <div class="form-group">
           <label for="instagram">Instagram</label>
           <input
             type="text"
-            v-model="instagram"
+            v-model="newLocation.instagram"
             id="instagram"
             placeholder="successvisaau"
           />
@@ -155,7 +171,7 @@
           <label for="facebook">Facebook</label>
           <input
             type="text"
-            v-model="facebook"
+            v-model="newLocation.facebook"
             id="facebook"
             placeholder="https://www.facebook.com/successvisaau"
           />
@@ -202,7 +218,7 @@
 
         <div class="form-group mt-4">
           <label for="timeZone">Time Zone</label>
-          <select v-model="timeZone" id="timeZone">
+          <select id="timeZone" v-model="newLocation.address_line_1">
             <option value="Sydney">Sydney</option>
             <option value="New York">New York</option>
             <option value="London">London</option>
@@ -250,86 +266,80 @@
         </div>
       </div>
       <hr />
-
-      <button @click="saveForm" class="submit-btn">Save</button>
+      <input
+        type="button"
+        :value="isEditing ? 'Edit Location' : 'Add Location'"
+        @click="saveForm"
+        class="submit-btn"
+      />
     </div>
   </DashboardLayout>
 </template>
 <script>
 import DashboardLayout from "../MainPageLayout/DashboardLayout.vue";
-
+import { mapActions, mapState } from "vuex"; // Import mapActions to map Vuex actions
 export default {
-  name: "App",
+  name: "AddLocation",
   components: {
     DashboardLayout,
   },
+  props: ["id"],
   data() {
     return {
       logoPreview: null,
-      locationType: "physical",
-      addressLine1: "",
-      addressLine2: "",
-      suburb: "",
-      state: "nsw",
-      postalCode: "",
-      email: "info@successvisa.com.au",
-      phone: "0468 791 726",
-      website: "www.successvisa.com.au",
-      socialX: "",
-      instagram: "successvisaau",
-      facebook: "https://www.facebook.com/successvisaau",
-      timeZone: "Sydney", // Default time zone
+      isEditing: false,
       days: [
-        { name: "Monday", isOpen: true, openTime: "09:00", closeTime: "17:30" },
-        {
-          name: "Tuesday",
-          isOpen: true,
-          openTime: "09:00",
-          closeTime: "17:30",
-        },
-        {
-          name: "Wednesday",
-          isOpen: true,
-          openTime: "09:00",
-          closeTime: "17:30",
-        },
-        {
-          name: "Thursday",
-          isOpen: true,
-          openTime: "09:00",
-          closeTime: "17:30",
-        },
-        { name: "Friday", isOpen: true, openTime: "09:00", closeTime: "17:30" },
+        { name: "Monday", isOpen: false, openTime: "", closeTime: "" },
+        { name: "Tuesday", isOpen: false, openTime: "", closeTime: "" },
+        { name: "Wednesday", isOpen: false, openTime: "", closeTime: "" },
+        { name: "Thursday", isOpen: false, openTime: "", closeTime: "" },
+        { name: "Friday", isOpen: false, openTime: "", closeTime: "" },
         { name: "Saturday", isOpen: false, openTime: "", closeTime: "" },
         { name: "Sunday", isOpen: false, openTime: "", closeTime: "" },
       ],
+      newLocation: {
+        location_name: "",
+        location_type: "",
+        address_line_1: "",
+        address_line_2: "", // Add this
+        suburb: "", // Added field to match your form
+        state: "",
+        postalCode: "", // Change `zip` to `postalCode` to match your form
+        email: "",
+        phone: "",
+        website: "",
+        latitude: "",
+        longitude: "",
+        open_time: "",
+        id: "", // To track if it's an edit action
+      },
     };
   },
-  methods: {
-    saveForm() {
-      // Basic validation
-      if (!this.locationName || !this.addressLine1 || !this.email) {
-        alert("Please fill in all required fields.");
-        return;
-      }
-      console.log("Form submitted", {
-        locationType: this.locationType,
-        addressLine1: this.addressLine1,
-        addressLine2: this.addressLine2,
-        suburb: this.suburb,
-        state: this.state,
-        postalCode: this.postalCode,
-        email: this.email,
-        phone: this.phone,
-        website: this.website,
-        socialX: this.socialX,
-        instagram: this.instagram,
-        facebook: this.facebook,
-        timeZone: this.timeZone,
-        businessHours: this.days,
-      });
-    },
+  computed: {
+    ...mapState("locations", ["location_list"]), // Assuming staffs are loaded in state
 
+    ...mapState({
+      locationData: (state) => state.location_list.newLocation,
+    }),
+  },
+  methods: {
+    ...mapActions("locations", [
+      "addLocation",
+      "updateLocation",
+      "findLocation",
+    ]), // Include the namespace
+    checkEditMode() {
+      const locationId = this.$route.query.id;
+      if (locationId != "0" && locationId != "" && locationId != undefined) {
+        this.isEditing = true;
+        const location = this.location_list.find(
+          (s) => parseInt(s.location_id) == parseInt(locationId)
+        );
+        if (location) {
+          this.newLocation = { ...location }; // Copy the existing staff details to the form
+        }
+      }
+    },
     handleDrop(e) {
       const file = e.dataTransfer.files[0];
       this.uploadLogo(file);
@@ -351,6 +361,17 @@ export default {
     addTime(dayIndex) {
       console.log("Additional times for", this.days[dayIndex].name);
       // Logic to handle adding more open/close times
+    },
+    async saveForm() {
+      try {
+        await this.addLocation(this.newLocation);
+        alert("Location added successfully!"); // Success message
+      } catch (error) {
+        console.error("Error adding Plan:", error);
+        alert("Failed to add Plan.");
+      } finally {
+        // this.loading = false;
+      }
     },
   },
 };

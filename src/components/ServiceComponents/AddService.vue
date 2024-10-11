@@ -11,7 +11,9 @@
               <form>
                 <!-- Name -->
                 <div class="mb-3">
-                  <label for="serviceName" class="form-label">Name</label>
+                  <label for="serviceName" class="form-label"
+                    >Name <span class="imp">*</span></label
+                  >
                   <input
                     type="text"
                     class="form-control"

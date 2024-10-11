@@ -70,9 +70,11 @@
 </template>
 
 <script>
-import { logoutAll } from "@/store/modules/auth";
+// import { logoutAll } from "@/store/apiMixin";
+import { apiMixin } from "@/store/apiMixin";
 export default {
   name: "TopHeader",
+  mixins: [apiMixin],
   data() {
     return {
       // userName: "",
@@ -81,8 +83,10 @@ export default {
   },
 
   methods: {
-    logoutUser() {
-      logoutAll(); // Clear session and redirect to login
+    logout() {
+      console.log("logout");
+      // Call the logoutAll function and pass the router instance
+      this.logoutAll(this.$router);
     },
   },
 };

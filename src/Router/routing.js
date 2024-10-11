@@ -5,6 +5,8 @@ import ServiceList from "../components/ServiceComponents/ServiceList.vue";
 import LocationList from "../components/LocationComponents/LocationList.vue";
 import HomePage from "../components/HomePage.vue";
 import FooterSection from "../components/MainPageLayout/FooterSection.vue";
+import AddStaff from "../components/StaffComponents/AddStaff.vue";
+import StaffList from "../components/StaffComponents/StaffList.vue";
 import SidebarClient from "../components/MainPageLayout/SidebarClient.vue";
 import TopHeader from "../components/MainPageLayout/TopHeader.vue";
 import LoginPage from "@/components/Dashboard/LoginPage.vue";
@@ -26,12 +28,20 @@ const routesUrl = [
     component: AddService,
   },
   {
+    path: "/AddStaff",
+    component: AddStaff,
+  },
+  {
     path: "/LocationList",
     component: LocationList,
   },
   {
     path: "/ServiceList",
     component: ServiceList,
+  },
+  {
+    path: "/StaffList",
+    component: StaffList,
   },
   {
     path: "/SidebarClient",

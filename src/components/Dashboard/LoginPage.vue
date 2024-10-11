@@ -1,13 +1,15 @@
 <template>
-  <div class="width100">
+  <!-- <DashboardLayout> -->
+  <div class="w100">
     <div class="display-flex overlay-login">
-      <div class="col-xl-5 col-lg-6 overlay-form">
-        <form class="w100">
-          <div class="row">
-            <div v-if="err == 0" class="has-error alert alert-success">
+      <div class="col-xl-5 col-lg-6 overlay-form m-auto">
+        <form class="w100" @submit.prevent="loginUser">
+          <!-- Prevent default form submission -->
+          <div class="row mt-5">
+            <div v-if="error == 0" class="alert alert-success">
               {{ msg }}
             </div>
-            <div v-if="err == 1" class="has-error alert alert-danger">
+            <div v-if="error == 1" class="alert alert-danger">
               {{ msg }}
             </div>
             <h1>Welcome Back! 👋</h1>
@@ -18,8 +20,9 @@
               <input
                 type="text"
                 class="form-control"
-                v-model="user"
+                v-model="username"
                 id="username"
+                required
               />
             </div>
             <div class="width100">
@@ -27,110 +30,157 @@
               <input
                 type="password"
                 class="form-control"
-                v-model="pass"
+                v-model="password"
                 id="password"
+                required
               />
             </div>
             <div class="mt-3">
-              <input
-                type="button"
-                v-if="loading == false"
-                value="Login"
-                class="login-form-btn"
-                @click="validateUser"
-              />
+              <button type="submit" class="login-form-btn" :disabled="loading">
+                <span v-if="loading">Loading...</span>
+                <!-- Loading text -->
+                <span v-else>Login</span>
+                <!-- Normal button text -->
+              </button>
             </div>
+            <button class="btn btn-1 hover-filled-opacity">
+              <span>hover me</span>
+            </button>
           </div>
         </form>
       </div>
       <div class="overlay-left col-xl-7 col-lg-6">
         <!-- <img
-            src="../../assets/images/Login.webp"
-            alt="login-img"
-            class="object-fit-fill"
-          /> -->
+        src="../../assets/images/Login.webp"
+        alt="login-img"
+        class="object-fit-fill"
+        /> -->
       </div>
     </div>
   </div>
+  <!-- </DashboardLayout> -->
 </template>
 
 <script>
-import axios from "axios";
-import ApiList from "@/ApiList";
+// import DashboardLayout from "../MainPageLayout/DashboardLayout.vue";
+import { authorizeUser } from "@/services/apiServices"; // Import the login function
+
 export default {
   name: "LoginPage",
+  components: {
+    // DashboardLayout,
+  },
   data() {
     return {
       loading: false,
-      user: "",
-      pass: "",
+      username: "",
+      password: "",
       msg: "",
-      err: -1, // 0 from no error; 1 for error
+      error: -1, // 0 for no error; 1 for error
     };
   },
-  mixins: [ApiList],
   created() {
     localStorage.clear();
   },
-  mounted() {
-    // console.log("i m mounted login")
-  },
   methods: {
-    async validateUser(e) {
-      // alert(this.apis)
-      var user = this.user;
-      var pass = this.pass;
-      this.loading = true;
-      // alert(user+"  "+pass)
-      if (user != "" && pass != "") {
-        // const url = this.apis.baseUrl + "validateUser";
-        const url = "http://127.0.0.1:8000/api/";
-        // const url = this.apis.apiUrl + this.apis.loginApi;
-        var tokenVal = this.apis.fixedToken;
-        // alert(this.selecetdCategory)
-        await axios
-          .get(url, {
-            params: {
-              username: user,
-              password: pass,
-            },
-            headers: {
-              Authorization: `${tokenVal}`,
-            },
-          }) //Product/listCategories?token="+localStorage.token)
-          .then((response) => {
-            console.log(response);
-            var res = response.data;
-            // alert(res.data);
-            console.log(res.data);
-            if (res.error == "0") {
-              this.loading = false;
-              localStorage.setItem("token", res.token);
-              localStorage.setItem("id", res.data.id);
-              // localStorage.setItem("member_id", res.data.member_id);
-              localStorage.setItem("name", res.data.name);
-              // localStorage.setItem("mobile", res.data.mobile_no);
-              localStorage.setItem("designation", res.data.designation);
-              // localStorage.setItem("password", res.data.password);
-              // alert("hi")
-              this.err = 0;
-              if (res.data.designation == "admin") {
-                // alert("admin panel");
-                this.$router.push("/admin-dashboard");
-              } else {
-                // alert("member panel");
-                this.$router.push("/member-dashboard");
-              }
-            } else {
-              this.err = 1;
-              this.loading = false;
-              this.msg = "Invalid Username or Password !";
-              e.preventDefault();
-            }
-          });
-        // return flag;
+    async loginUser() {
+      // Reset messages
+      console.log("function call");
+      this.msg = "";
+      this.error = -1;
+
+      // Validate inputs
+      if (!this.username || !this.password) {
+        this.msg = "Both fields are required.";
+        this.error = 1; // Set error state
+        return;
+      }
+
+      this.loading = true; // Set loading state
+
+      try {
+        const credentials = {
+          username: this.username,
+          password: this.password,
+        };
+        const response = await authorizeUser(credentials);
+
+        console.log("Response from API:" + response); // Debugging the response
+
+        // const res = response.data;
+
+        // Check if login is successful based on 'error' value being '0'
+        if (response.error === "0") {
+          console.log("error" + response.error);
+          this.msg = response.msg || "Login successful!"; // Show success message
+          this.error = 0; // Set success state
+          localStorage.setItem("token", response.token); // Store the token
+          this.$router.push("/dashboard"); // Redirect to dashboard
+        } else {
+          this.msg =
+            response.msg || "Login failed. Please check your credentials."; // Show error message
+          this.error = 1; // Set response.error state
+        }
+      } catch (error) {
+        console.error("response.Error during login:", error); // Log the error for debugging
+        this.msg = "An Error Occurred during login."; // Generic error message
+        this.error = 1; // Set error state
+      } finally {
+        this.loading = false; // Reset loading state
       }
     },
   },
 };
 </script>
+<style scoped>
+.btn {
+  position: relative;
+  display: inline-block;
+  width: auto;
+  height: auto;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  margin: 0px 25px 15px;
+  min-width: 150px;
+}
+.btn span {
+  position: relative;
+  display: inline-block;
+  font-size: 14px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 15px 20px;
+  transition: 0.3s;
+}
+
+/*--- btn-1 ---*/
+.btn-1::before {
+  background-color: rgb(28, 31, 30);
+  transition: 0.3s ease-out;
+}
+.btn-1 span {
+  color: rgb(255, 255, 255);
+  border: 1px solid rgb(28, 31, 30);
+  transition: 0.2s 0.1s;
+}
+.btn-1 span:hover {
+  color: rgb(28, 31, 30);
+  transition: 0.2s 0.1s;
+} /* 5. hover-filled-opacity */
+.btn.hover-filled-opacity::before {
+  top: 0;
+  bottom: 0;
+  right: 0;
+  height: 100%;
+  width: 100%;
+  opacity: 1;
+}
+.btn.hover-filled-opacity:hover::before {
+  opacity: 0;
+}
+</style>

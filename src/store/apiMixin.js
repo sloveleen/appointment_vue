@@ -1,35 +1,64 @@
-import { fetchData, postData } from "@/services/apiServices"; // Adjust the path accordingly
-import { useRouter } from "vue-router";
+// apiMixin
+import axios from "axios";
+// import { useRouter } from "vue-router";
 
 export const apiMixin = {
   methods: {
-    async fetchDataMixin(url, paramValue = {}) {
+    async fetchData(url, paramValue = {}) {
       console.log("Fetching data with parameters:", paramValue);
+      const tokenValue = localStorage.getItem("token");
+
       try {
-        const data = await fetchData(url, paramValue);
-        console.log("Fetched data:", data);
-        return data;
+        const headers = {
+          Authorization: `Bearer ${tokenValue}`,
+          "Content-Type": "application/json",
+        };
+
+        const response = await axios.get(url, { headers, params: paramValue });
+
+        // If session expired
+        if (response.data.error === "2") {
+          alert(response.data.msg); // Alert the session expiration message
+          this.logoutAll(); // Trigger logout
+        }
+
+        console.log("Fetched data:", response.data);
+        return response.data;
       } catch (error) {
         console.error("API Fetch Error:", error);
         throw error;
       }
     },
 
-    async postDataMixin(url, data) {
+    async postData(url, data) {
+      const tokenValue = localStorage.getItem("token");
+
       try {
-        const responseData = await postData(url, data);
-        return responseData;
+        const headers = {
+          Authorization: `Bearer ${tokenValue}`,
+          "Content-Type": "application/json",
+        };
+
+        const response = await axios.post(url, data, { headers });
+
+        // If session expired
+        if (response.data.error === "2") {
+          alert(response.data.msg); // Alert the session expiration message
+          this.logoutAll(); // Trigger logout
+        }
+
+        return response.data;
       } catch (error) {
         console.error("API Post Error:", error);
         throw error;
       }
     },
 
-    logoutAll() {
-      // Clear local storage and redirect to the login page
+    logoutAll(router) {
+      // Clear local storage and remove token
       localStorage.clear();
-      const router = useRouter();
-      router.push("/login"); // Redirect to login page
+      delete axios.defaults.headers.common["Authorization"];
+      router.push("/"); // Redirect to login page
     },
   },
 };

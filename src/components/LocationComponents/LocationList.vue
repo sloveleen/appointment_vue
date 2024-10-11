@@ -1,50 +1,69 @@
 <template>
   <DashboardLayout>
-    <div class="staff-container">
+    <div v-if="loading">Loading locations...</div>
+    <div class="location-container" v-else>
       <!-- Header -->
-      <div class="header">
-        <h2>Staff</h2>
+      <div
+        class="header d-flex justify-content-between align-items-center mb-2"
+      >
+        <!-- list4: {{ filteredLocation }} -->
+        <h2>Location List ({{ filteredLocation.length }})</h2>
         <input
           type="text"
           v-model="searchQuery"
           placeholder="Search by name"
           class="search-input"
         />
-        <button class="add-staff-btn">+ Add staff</button>
+        <button class="add-location-btn" @click="addLocation">
+          + Add Location
+        </button>
+        <!-- {{ showInactive }} -->
+        <button class="btn" @click="showInactive = !showInactive">
+          {{ showInactive ? "Hide active" : "Show Inactive" }}
+        </button>
       </div>
 
-      <!-- Staff Table -->
+      <!-- location Table -->
       <div class="table-container">
-        <table class="staff-table">
+        <table class="location-table">
           <thead>
             <tr>
               <th>Name</th>
-              <th>Work email</th>
-              <th>Work phone</th>
-              <th>Permissions</th>
-              <th>Online booking</th>
+              <th>Type</th>
+              <th>Pincode</th>
+              <th>State</th>
+              <th>Email</th>
+              <th>Website</th>
+              <th>Mobile</th>
+              <th>Actions</th>
             </tr>
           </thead>
           <tbody>
-            <tr v-for="staff in filteredStaff" :key="staff.email">
-              <td class="staff-name">
-                <div class="staff-info">
-                  <span
-                    class="staff-initials"
-                    :style="getBorderStyle(staff.name)"
-                  >
-                    {{ getInitials(staff.name) }}
-                  </span>
-                  <span class="staff-full-name">{{ staff.name }}</span>
+            <tr v-for="location in filteredLocation" :key="location.email">
+              <td class="location-name">
+                <div class="location-info">
+                  <span class="location-initials"> </span>
+                  <span class="location-full-name">{{
+                    location.location_name || "NA"
+                  }}</span>
                 </div>
               </td>
-              <td>{{ staff.email }}</td>
-              <td>{{ staff.phone }}</td>
-              <td>{{ staff.permissions }}</td>
-              <td>
-                <button class="services-btn">
-                  {{ staff.services }} services bookable
-                </button>
+              <td>{{ location.location_type || "NA" }}</td>
+              <td>{{ location.pincode || "NA" }}</td>
+              <td>{{ location.state || "NA" }}</td>
+              <td>{{ location.email || "NA" }}</td>
+              <td>{{ location.website || "NA" }}</td>
+              <td>{{ location.contact_no || "NA" }}</td>
+              <td class="action-icons">
+                <span @click="editDetails(location.location_id)">
+                  <img src="../../assets/svg/edit-icon.svg" alt="edit-icon" />
+                </span>
+                <span @click="deleteDetails(location.location_id)">
+                  <img
+                    src="../../assets/svg/delete-icon.svg"
+                    alt="delete-icon"
+                  />
+                </span>
               </td>
             </tr>
           </tbody>
@@ -56,75 +75,76 @@
 
 <script>
 import DashboardLayout from "../MainPageLayout/DashboardLayout.vue";
+import { mapState, mapActions } from "vuex";
+
 export default {
   components: { DashboardLayout },
   data() {
     return {
+      loading: true,
       searchQuery: "",
-      staffList: [
-        {
-          name: "Amit Kansal",
-          email: "successvisasydney@gmail.com",
-          phone: "0468 791 726",
-          permissions: "Owner",
-          services: 8,
-        },
-        {
-          name: "Amit Kansal (T)",
-          email: "successvisaau@gmail.com",
-          phone: "0468 791 726",
-          permissions: "Team Permissions",
-          services: 4,
-        },
-        {
-          name: "Krishlyn Krishlyn (T)",
-          email: "infosydney@successvisa.com.au",
-          phone: "0468 791 726",
-          permissions: "Team Permissions",
-          services: 2,
-        },
-        {
-          name: "Krishlyn Krishlyn",
-          email: "info@successvisa.com.au",
-          phone: "0468 791 726",
-          permissions: "Team Permissions",
-          services: 4,
-        },
-        {
-          name: "Krish",
-          email: "info@successvisa.com.au",
-          phone: "0468 791 726",
-          permissions: "Team Permissions",
-          services: 4,
-        },
-      ],
+      showInactive: false,
     };
   },
   computed: {
-    filteredStaff() {
-      return this.staffList.filter((staff) =>
-        staff.name.toLowerCase().includes(this.searchQuery.toLowerCase())
+    ...mapState("locations", {
+      locationList: (state) =>
+        Array.isArray(state.location_list) ? state.location_list : [], // Ensure it's an array
+    }),
+    filteredLocation() {
+      const query = this.searchQuery.toLowerCase();
+      let locations = this.locationList.filter((location) =>
+        Object.values(location).some((value) =>
+          value.toString().toLowerCase().includes(query)
+        )
       );
+
+      if (!this.showInactive) {
+        locations = locations.filter(
+          (location) => location.status !== "inactive"
+        );
+      }
+
+      return locations;
     },
   },
+  created() {
+    this.loadLocationList();
+  },
   methods: {
-    getInitials(name) {
-      return name
-        .split(" ")
-        .map((n) => n[0].toUpperCase())
-        .join("");
+    ...mapActions("locations", ["locationsList"]),
+    async loadLocationList() {
+      // alert(" Location List load");
+      this.loading = true;
+      try {
+        await this.$store.dispatch("locations/locationsList");
+        console.log("load Location list" + this.loadLocationList);
+      } finally {
+        this.loading = false;
+      }
     },
-    getBorderStyle(name) {
-      // Define colors for each border-left
-      const colors = ["#007bff", "#28a745", "#ffc107", "#dc3545"];
-      const index = name.length % colors.length;
-      return {
-        borderLeft: `2px solid ${colors[index]}`,
-        paddingLeft: "10px", // Adjust padding to make up for the border
-        backgroundColor: "#fff", // Ensure background is white
-        color: "#555",
-        // borderRadius: "50%",
-      };
+
+    async editDetails(sid) {
+      alert(sid);
+      this.$router.push(`/AddLocation?id=${sid}`);
+    },
+    async deleteDetails(id) {
+      if (confirm("Are you sure you want to delete this member?")) {
+        try {
+          await this.$store.dispatch("locations/deleteLocation", id);
+          alert("Location deleted successfully.");
+          // Reload the location list after deletion
+          await this.loadLocationList();
+        } catch (error) {
+          console.error("Failed to delete member:", error);
+          alert("Error deleting member.");
+        }
+      } else {
+        alert("Cancelled");
+      }
+    },
+    async addLocation() {
+      this.$router.push("/AddLocation?id=0"); // Pass a default id or set it up as needed
     },
   },
 };
@@ -132,23 +152,10 @@ export default {
 
 <style scoped>
 /* Container Styling */
-.staff-container {
+.location-container {
   padding: 20px;
   background-color: #f7f7f7;
   font-family: Arial, sans-serif;
-}
-
-/* Header */
-.header {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 20px;
-}
-
-h2 {
-  font-size: 1.5rem;
-  margin: 0;
 }
 
 .search-input {
@@ -156,10 +163,10 @@ h2 {
   font-size: 1rem;
   width: 300px;
   border: 1px solid #ccc;
-  border-radius: 5px;
+  border-radius: 7px;
 }
 
-.add-staff-btn {
+.add-location-btn {
   background-color: #0056b3;
   color: white;
   padding: 10px 20px;
@@ -168,68 +175,21 @@ h2 {
   cursor: pointer;
 }
 
-.add-staff-btn:hover {
+.add-location-btn:hover {
   background-color: #003f88;
 }
 
-/* Staff Table */
-.table-container {
-  background-color: white;
-  border-radius: 10px;
+table {
   overflow-x: auto;
-}
-
-.staff-table {
   width: 100%;
+  background-color: white;
   border-collapse: collapse;
-}
 
-.staff-table th,
-.staff-table td {
-  padding: 15px;
-  text-align: left;
-  border-bottom: 1px solid #e0e0e0;
-}
-
-.staff-name {
-  display: flex;
-  align-items: center;
-}
-
-/* Staff Information */
-.staff-info {
-  display: flex;
-  align-items: center;
-}
-
-.staff-initials {
-  width: 40px;
-  height: 40px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 1.2rem;
-  margin-right: 10px;
-  border-left-width: 5px;
-  border-left-style: solid;
-}
-
-.staff-full-name {
-  font-weight: 600;
-}
-
-/* Online Booking Button */
-.services-btn {
-  background-color: #f2f2f2;
-  border: none;
-  padding: 7px 15px;
-  border-radius: 20px;
-  color: #555;
-  font-size: 0.9rem;
-  cursor: pointer;
-}
-
-.services-btn:hover {
-  background-color: #e6e6e6;
+  th,
+  td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid #e0e0e0;
+  }
 }
 </style>
